@@ -2,17 +2,18 @@
 # 🚦 AI Traffic Light — Reasonix 集成示例
 # 用法：在 Reasonix 的 hooks 或代码中调用此脚本
 
-# 设置状态文件路径（优先项目目录，然后用户目录）
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# 设置状态文件路径（优先用户目录，然后项目目录）
 STATUS_FILE=""
-for dir in "$PROJECT_DIR/.ai-traffic-light" "$HOME/.ai-traffic-light"; do
+for dir in "$HOME/.ai-traffic-light" "$PROJECT_DIR/.ai-traffic-light"; do
     if [ -d "$dir" ] && [ -w "$dir" ]; then
         STATUS_FILE="$dir/status.json"
         break
     fi
 done
 if [ -z "$STATUS_FILE" ]; then
-    STATUS_FILE="$PROJECT_DIR/.ai-traffic-light/status.json"
+    STATUS_FILE="$HOME/.ai-traffic-light/status.json"
     mkdir -p "$(dirname "$STATUS_FILE")"
 fi
 

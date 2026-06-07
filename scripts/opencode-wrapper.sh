@@ -2,7 +2,18 @@
 # 🚦 OpenCode wrapper
 # 安装: echo 'alias opencode="/path/to/opencode-wrapper.sh"' >> ~/.zshrc
 
-STATUS_FILE="/Library/code/pycharmcode/ai-traffic-light/.ai-traffic-light/status.json"
+# 优先用户目录，然后项目目录
+STATUS_FILE=""
+for dir in "$HOME/.ai-traffic-light" "/Library/code/pycharmcode/ai-traffic-light/.ai-traffic-light"; do
+    if [ -d "$dir" ] && [ -w "$dir" ]; then
+        STATUS_FILE="$dir/status.json"
+        break
+    fi
+done
+if [ -z "$STATUS_FILE" ]; then
+    STATUS_FILE="$HOME/.ai-traffic-light/status.json"
+    mkdir -p "$(dirname "$STATUS_FILE")"
+fi
 
 # 找到真实的 opencode
 OPENCODE_BIN=""

@@ -31,4 +31,7 @@ enum AppConstants {
 
     /// 状态文件路径（相对于用户 Home）
     static let statusFileRelativePath = ".ai-traffic-light/status.json"
+    
+    /// 项目目录下的状态文件路径（作为备选）
+    static let projectStatusFileRelativePath = "ai-traffic-light/.ai-traffic-light/status.json"
 }

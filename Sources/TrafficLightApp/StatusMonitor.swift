@@ -16,8 +16,21 @@ class StatusMonitor {
     // MARK: - 状态文件路径
 
     private let statusFileURL: URL = {
+        // 优先检查项目目录
+        let projectPath = URL(fileURLWithPath: "/Library/code/pycharmcode").appendingPathComponent(AppConstants.projectStatusFileRelativePath)
+        if FileManager.default.fileExists(atPath: projectPath.path) {
+            return projectPath
+        }
+        
+        // 然后检查用户目录
         let home = FileManager.default.homeDirectoryForCurrentUser
-        return home.appendingPathComponent(AppConstants.statusFileRelativePath)
+        let userPath = home.appendingPathComponent(AppConstants.statusFileRelativePath)
+        if FileManager.default.fileExists(atPath: userPath.path) {
+            return userPath
+        }
+        
+        // 默认返回项目目录路径
+        return projectPath
     }()
 
     // MARK: - 内部状态
@@ -166,10 +179,12 @@ class StatusMonitor {
             let tc = (json["transition_count"] as? NSNumber)?.intValue ?? 0
 
             DispatchQueue.main.async {
-                guard !status.isEmpty, heartbeat > 0 else { return }
-
+                guard !status.isEmpty else { return }
+                
+                // 如果没有 heartbeat 字段，使用当前时间
+                let heartbeatValue = heartbeat > 0 ? heartbeat : Int(Date().timeIntervalSince1970)
                 self.fileExisted = true
-                self.lastHeartbeat = Date(timeIntervalSince1970: TimeInterval(heartbeat))
+                self.lastHeartbeat = Date(timeIntervalSince1970: TimeInterval(heartbeatValue))
                 self.currentTask = json["current_task"] as? String
                 if self.currentTask == nil {
                     self.currentTask = json["message"] as? String
