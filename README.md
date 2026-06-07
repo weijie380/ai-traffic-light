@@ -63,44 +63,27 @@ make install    # 编译 + 打包 .app + 安装到 /Applications
 
 ## 🔧 集成你的 AI 工具
 
-### OpenCode（推荐）
+详细集成指南请查看 [INTEGRATION.md](INTEGRATION.md)。
 
-安装 wrapper 脚本后，OpenCode 启动/完成时自动更新状态：
+### OpenCode（已配置 ✅）
 
+你的 OpenCode alias 已经配置好了：
 ```bash
-# 设置 alias（添加到 ~/.zshrc 或 ~/.bashrc）
-echo 'alias opencode="/path/to/ai-traffic-light/scripts/opencode-wrapper.sh"' >> ~/.zshrc
+alias opencode='/Library/code/pycharmcode/ai-traffic-light/scripts/opencode-wrapper.sh'
+```
 
-# 重新加载 shell
+**使用方法：**
+```bash
+# 重新加载 shell（如果刚配置）
 source ~/.zshrc
+
+# 现在运行 opencode 会自动显示红绿灯
+opencode
 ```
-
-现在每次运行 `opencode`，红绿灯会自动显示：
-- 🟢 绿灯闪烁 = OpenCode 正在运行
-- 🟡 黄灯 = OpenCode 完成
-- 🔴 红灯 = OpenCode 遇到错误
-
-### Claude Code
-
-安装 hooks 后，Claude Code 事件会自动更新状态：
-
-```bash
-# 一键安装 hooks
-cd ai-traffic-light
-bash scripts/install.sh
-```
-
-安装后，Claude Code 的以下事件会自动触发：
-- `onTaskStart` → 🟢 绿灯
-- `onTaskEnd` → 🟡 黄灯
-- `onError` → 🔴 红灯
-- `onPermissionRequest` → 🔴 红灯（等待授权）
 
 ### Reasonix
 
-**方式一：使用集成脚本（推荐）**
-
-在 Reasonix 的代码或 hooks 中调用集成脚本：
+在 Reasonix 的代码中调用集成脚本：
 
 ```bash
 # 任务开始
@@ -116,64 +99,7 @@ bash scripts/install.sh
 ./scripts/reasonix-integration.sh permission "Reasonix" "需要文件访问权限"
 ```
 
-**方式二：直接写 JSON 文件**
-
-在 Reasonix 的代码中直接写入状态文件：
-
-```python
-import json
-import time
-
-# 状态文件路径（优先项目目录，然后用户目录）
-status_file = ".ai-traffic-light/status.json"  # 或 ~/.ai-traffic-light/status.json
-
-data = {
-    "status": "working",
-    "signal": "working",
-    "tool": "Reasonix",
-    "message": "正在分析代码...",
-    "heartbeat": int(time.time()),
-    "transition_count": 1
-}
-
-with open(status_file, "w") as f:
-    json.dump(data, f, indent=2)
-```
-
-**方式三：使用 HTTP API**
-
-如果启用了 Python 后端服务器：
-
-```bash
-# 启动服务器
-python3 -m signal_light serve
-
-# 通过 HTTP 更新状态
-curl -X POST http://127.0.0.1:19876/update \
-  -H "Content-Type: application/json" \
-  -d '{"signal":"working","tool":"Reasonix","message":"分析中..."}'
-```
-
-### 其他 AI 工具
-
-对于其他 AI 工具，可以直接写状态文件 `~/.ai-traffic-light/status.json`：
-
-```json
-{
-  "status": "working",
-  "signal": "working",
-  "tool": "你的工具名",
-  "message": "正在处理...",
-  "heartbeat": 1717700000,
-  "transition_count": 3
-}
-```
-
-状态值说明：
-- `idle` → ⚫ 空闲
-- `working` → 🟢 运行中
-- `completed` → 🟡 已完成
-- `waiting` → 🔴 等待授权
+更多集成方式请查看 [INTEGRATION.md](INTEGRATION.md)。
 
 ---
 

@@ -2,10 +2,10 @@
   "status": "completed",
   "signal": "completed",
   "tool": "Reasonix",
-  "message": "完成",
+  "message": "任务完成",
   "emoji": "🟡",
   "pattern": "pulse-yellow",
-  "timestamp": "2026-06-07T12:41:38Z",
-  "heartbeat": 1780836098,
-  "transition_count": 2
+  "timestamp": "2026-06-07T12:45:12Z",
+  "heartbeat": 1780836312,
+  "transition_count": 4
 }
