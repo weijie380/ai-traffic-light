@@ -22,8 +22,8 @@ enum AppConstants {
     static let timingMinDuration: TimeInterval = 0.3
 
     /// 菜单栏固定尺寸
-    static let menuBarWidth: CGFloat = 50
-    static let menuBarHeight: CGFloat = 24
+    static let menuBarWidth: CGFloat = 58  // 增加宽度
+    static let menuBarHeight: CGFloat = 26 // 增加高度
 
     /// 菜单标题栏尺寸
     static let menuHeaderWidth: CGFloat = 240

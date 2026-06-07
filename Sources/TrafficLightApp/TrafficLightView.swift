@@ -7,9 +7,9 @@ class TrafficLightView: NSView {
 
     // MARK: - 绘制参数
 
-    private let dotRadius: CGFloat = 5.0
-    private let spacing: CGFloat = 4.0
-    private let padding: CGFloat = 2.0
+    private let dotRadius: CGFloat = 6.0      // 增大圆点半径
+    private let spacing: CGFloat = 5.0        // 增大间距
+    private let padding: CGFloat = 4.0        // 增大内边距
 
     private var totalWidth: CGFloat {
         padding * 2 + dotRadius * 6 + spacing * 2
@@ -96,7 +96,7 @@ class TrafficLightView: NSView {
             }
 
             let color = colorForLight(lightState)
-            let alpha: CGFloat = isLit ? 1.0 : 0.25
+            let alpha: CGFloat = isLit ? 1.0 : 0.35  // 增加未激活状态的可见度
             let rect = NSRect(
                 x: center.x - dotRadius, y: center.y - dotRadius,
                 width: dotRadius * 2, height: dotRadius * 2
@@ -116,14 +116,14 @@ class TrafficLightView: NSView {
 
             // 边框
             if isLit {
-                NSColor.black.withAlphaComponent(0.15).setStroke()
+                NSColor.black.withAlphaComponent(0.2).setStroke()  // 增加边框对比度
             } else {
-                NSColor.black.withAlphaComponent(0.06).setStroke()
+                NSColor.black.withAlphaComponent(0.1).setStroke()
             }
             let border = mode == .off
                 ? NSBezierPath(ovalIn: rect)
                 : shapePath(for: lightState, in: rect)
-            border.lineWidth = 0.5
+            border.lineWidth = 0.8  // 增加边框宽度
             border.stroke()
         }
     }

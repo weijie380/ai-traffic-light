@@ -20,7 +20,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if let button = statusItem.button {
             button.title = ""
             button.image = nil
-            trafficLightView = TrafficLightView(frame: .zero)
+            trafficLightView = TrafficLightView(frame: NSRect(x: 0, y: 0,
+                                                              width: AppConstants.menuBarWidth,
+                                                              height: AppConstants.menuBarHeight))
             button.addSubview(trafficLightView)
             button.frame = NSRect(x: 0, y: 0,
                                   width: AppConstants.menuBarWidth,
