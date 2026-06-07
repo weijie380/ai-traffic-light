@@ -1,11 +1,11 @@
 {
-  "status": "idle",
-  "signal": "idle",
-  "tool": "",
-  "message": "空闲",
-  "emoji": "",
-  "pattern": "off",
-  "timestamp": "2026-06-07T10:00:00Z",
-  "heartbeat": 1717700400,
-  "transition_count": 0
+  "status": "completed",
+  "signal": "completed",
+  "tool": "Reasonix",
+  "message": "完成",
+  "emoji": "🟡",
+  "pattern": "pulse-yellow",
+  "timestamp": "2026-06-07T12:41:38Z",
+  "heartbeat": 1780836098,
+  "transition_count": 2
 }
