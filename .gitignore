@@ -6,6 +6,7 @@
 *.app/
 
 # Compiled binaries
+TrafficLightApp
 ai-traffic-light-menubar
 menubar_simple
 menubar_debug
@@ -19,3 +20,7 @@ menubar_debug
 # Python
 __pycache__/
 *.pyc
+
+# Internal notes
+todo.md
+.reasonix/

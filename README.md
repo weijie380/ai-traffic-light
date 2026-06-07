@@ -7,7 +7,7 @@
 **绿 🟢** — 任务运行中  
 **灰 ⚫** — 空闲 / 无活跃任务
 
-![screenshot](docs/screenshot.png)
+<!-- ![screenshot](docs/screenshot.png) -->
 
 ---
 
@@ -29,7 +29,7 @@
 
 ### 方式一：下载编译好的 App（推荐）
 
-从 [GitHub Releases](https://github.com/your-org/ai-traffic-light/releases) 下载最新版：
+从 [GitHub Releases](https://github.com/weijie380/ai-traffic-light/releases) 下载最新版：
 1. 下载 `AI Traffic Light.dmg` → 拖入 Applications
 2. 首次运行：右键 → 打开（或从 Launchpad 打开）
 3. 菜单栏出现红绿灯 🚦
