@@ -1,3 +1,6 @@
+[![Download](https://img.shields.io/badge/Download-v0.3.0-blue)](https://github.com/weijie380/ai-traffic-light/releases/latest)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/weijie380/ai-traffic-light/blob/main/LICENSE)
+
 # 🚦 AI Traffic Light
 
 > 实时显示 AI 工具工作状态的 macOS 菜单栏红绿灯。
@@ -30,7 +33,7 @@
 ### 方式一：下载编译好的 App（推荐）
 
 从 [GitHub Releases](https://github.com/weijie380/ai-traffic-light/releases) 下载最新版：
-1. 下载 `AI Traffic Light.dmg` → 拖入 Applications
+1. 下载 `AI Traffic Light.app.zip` → 解压 → 拖入 Applications
 2. 首次运行：右键 → 打开（或从 Launchpad 打开）
 3. 菜单栏出现红绿灯 🚦
 
