@@ -1,0 +1,11 @@
+{
+  "status": "idle",
+  "signal": "idle",
+  "tool": "",
+  "message": "空闲",
+  "emoji": "",
+  "pattern": "off",
+  "timestamp": "2026-06-07T10:00:00Z",
+  "heartbeat": 1717700400,
+  "transition_count": 0
+}

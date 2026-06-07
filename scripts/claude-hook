@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+# 🚦  AI Traffic Light — Claude Code Hook
+# Called by Claude Code at specific events
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+exec python3 -m signal_light hook "$@"

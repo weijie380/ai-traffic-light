@@ -1,0 +1,21 @@
+# SPM build
+.build/
+/.build/
+
+# App bundle
+*.app/
+
+# Compiled binaries
+ai-traffic-light-menubar
+menubar_simple
+menubar_debug
+
+# CodeGraph
+.codegraph/
+
+# OS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc

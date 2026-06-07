@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Traffic Light</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  :root {
+    --bg: rgba(30, 30, 35, 0.92);
+    --border: rgba(255, 255, 255, 0.08);
+    --text: rgba(255, 255, 255, 0.9);
+    --text-dim: rgba(255, 255, 255, 0.5);
+    --inactive: rgba(255, 255, 255, 0.06);
+    --housing: rgba(0, 0, 0, 0.5);
+  }
+
+  body {
+    background: transparent;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+  }
+
+  .housing {
+    background: var(--bg);
+    backdrop-filter: blur(40px) saturate(1.4);
+    -webkit-backdrop-filter: blur(40px) saturate(1.4);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 24px 28px 28px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-width: 110px;
+    transition: box-shadow 0.6s, border-color 0.6s;
+  }
+  .housing.priority-waiting {
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4), 0 0 40px rgba(255,59,48,0.08);
+    border-color: rgba(255,59,48,0.15);
+  }
+  .housing.priority-working {
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4), 0 0 40px rgba(52,199,89,0.08);
+    border-color: rgba(52,199,89,0.15);
+  }
+  .housing.priority-completed {
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4), 0 0 40px rgba(255,204,0,0.06);
+    border-color: rgba(255,204,0,0.12);
+  }
+  
+  /* ─── Lights ────────────────────────── */
+  .lights { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 6px 0; }
+  .light {
+    width: 52px; height: 52px; border-radius: 50%;
+    position: relative;
+    background: var(--inactive);
+    border: 2px solid rgba(255,255,255,0.12);
+    box-shadow: inset 0 4px 12px rgba(0,0,0,0.4);
+    transition: background 0.5s, box-shadow 0.5s, border-color 0.5s;
+  }
+  .light::after {
+    content: ''; position: absolute; top: 5px; left: 5px; right: 5px; bottom: 5px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.06), transparent 70%);
+    transition: opacity 0.5s;
+  }
+  .light.active::after { opacity: 1; background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.3), transparent 70%); }
+  
+  .light.red.active {
+    background: radial-gradient(circle at 35% 30%, #FF6B5E, #FF3B30 50%, #CC2F25);
+    border-color: transparent;
+  }
+  .light.yellow.active {
+    background: radial-gradient(circle at 35% 30%, #FFE066, #FFCC00 50%, #D6A800);
+    border-color: transparent;
+  }
+  .light.green.active {
+    background: radial-gradient(circle at 35% 30%, #5EE89A, #34C759 50%, #28A745);
+    border-color: transparent;
+  }
+
+  /* ─── Animations ─────────────────────── */
+  @keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 20px rgba(52,199,89,0.4), 0 0 50px rgba(52,199,89,0.15); }
+    50% { box-shadow: 0 0 35px rgba(52,199,89,0.7), 0 0 80px rgba(52,199,89,0.3); }
+  }
+  @keyframes pulse-red {
+    0%, 100% { box-shadow: 0 0 20px rgba(255,59,48,0.4), 0 0 50px rgba(255,59,48,0.15); }
+    50% { box-shadow: 0 0 35px rgba(255,59,48,0.7), 0 0 80px rgba(255,59,48,0.3); }
+  }
+  @keyframes pulse-yellow {
+    0%, 100% { box-shadow: 0 0 20px rgba(255,204,0,0.3), 0 0 50px rgba(255,204,0,0.1); }
+    50% { box-shadow: 0 0 35px rgba(255,204,0,0.6), 0 0 70px rgba(255,204,0,0.25); }
+  }
+  @keyframes flash-red {
+    0%, 49% { box-shadow: 0 0 30px rgba(255,59,48,0.6), 0 0 70px rgba(255,59,48,0.3); }
+    50%, 100% { box-shadow: 0 0 0px rgba(255,59,48,0); }
+  }
+
+  .light.red.pulse-green { }
+  .light.red.animate-pulse-green { animation: pulse-green 2s ease-in-out infinite; }
+  .light.red.animate-pulse-red { animation: pulse-red 1.8s ease-in-out infinite; }
+  .light.red.animate-pulse-yellow { animation: pulse-yellow 2s ease-in-out infinite; }
+  .light.red.animate-flash-red { animation: flash-red 1s ease-in-out infinite; }
+
+  .light.yellow.animate-pulse-green { animation: pulse-green 2s ease-in-out infinite; }
+  .light.yellow.animate-pulse-red { animation: pulse-red 1.8s ease-in-out infinite; }
+  .light.yellow.animate-pulse-yellow { animation: pulse-yellow 2s ease-in-out infinite; }
+  .light.yellow.animate-flash-red { }
+
+  .light.green.animate-pulse-green { animation: pulse-green 2s ease-in-out infinite; }
+  .light.green.animate-pulse-red { animation: pulse-red 1.8s ease-in-out infinite; }
+  .light.green.animate-pulse-yellow { animation: pulse-yellow 2s ease-in-out infinite; }
+  .light.green.animate-flash-red { }
+
+  /* ─── Labels ──────────────────────────── */
+  .light-label {
+    font-size: 9px; font-weight: 600; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--text-dim); text-align: center;
+    transition: color 0.4s;
+  }
+  .light-label.on { color: var(--text); }
+  
+  /* ─── Info ──────────────────────────────── */
+  .info { text-align: center; margin-top: 4px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06); width: 100%; }
+  .signal-name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .message { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+  .elapsed { font-size: 10px; color: rgba(255,255,255,0.25); margin-top: 4px; font-variant-numeric: tabular-nums; }
+  
+  /* idle breather */
+  .idle-breathe { width: 6px; height: 6px; border-radius: 50%; margin: 6px auto 0; }
+  .idle-breathe.on { display: block; background: rgba(255,255,255,0.2); animation: breathe 3s ease-in-out infinite; }
+  @keyframes breathe { 0%,100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.3); } }
+  
+  .legend { display: flex; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.04); justify-content: center; opacity: 0.3; }
+  .legend-item { display: flex; align-items: center; gap: 3px; font-size: 8px; color: var(--text-dim); }
+  .legend-dot { width: 6px; height: 6px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12); }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: rgba(255,255,255,0.85);
+      --border: rgba(0,0,0,0.08);
+      --text: rgba(0,0,0,0.85);
+      --text-dim: rgba(0,0,0,0.45);
+      --inactive: rgba(0,0,0,0.04);
+    }
+  }
+</style>
+</head>
+<body>
+<div class="housing" id="housing">
+  <div class="lights">
+    <div class="light red" id="light-red"></div>
+    <div class="light-label" id="label-red">等待</div>
+    <div class="light yellow" id="light-yellow"></div>
+    <div class="light-label" id="label-yellow">完成</div>
+    <div class="light green" id="light-green"></div>
+    <div class="light-label" id="label-green">运行</div>
+  </div>
+  <div class="info">
+    <div class="signal-name" id="signal-name">—</div>
+    <div class="message" id="message">空闲</div>
+    <div class="elapsed" id="elapsed"></div>
+    <div class="idle-breathe" id="idle-breathe"></div>
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot" style="background:#FF3B30"></span>等待</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#34C759"></span>运行</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#FFCC00"></span>完成</span>
+    </div>
+  </div>
+  <button id="install-btn" style="display:none; margin-top:6px; padding:5px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.06); color:var(--text); font-size:10px; cursor:pointer;">📥 安装桌面应用</button>
+</div>
+
+<script>
+const HOST = location.host;
+const lights = {
+  red: document.getElementById('light-red'),
+  yellow: document.getElementById('light-yellow'),
+  green: document.getElementById('light-green'),
+};
+const labels = {
+  red: document.getElementById('label-red'),
+  yellow: document.getElementById('label-yellow'),
+  green: document.getElementById('label-green'),
+};
+const housing = document.getElementById('housing');
+const sigName = document.getElementById('signal-name');
+const msgEl = document.getElementById('message');
+const elapsedEl = document.getElementById('elapsed');
+const idleBreathe = document.getElementById('idle-breathe');
+
+const PATTERN_MAP = {
+  'off':          { active: null,        housingClass: '' },
+  'pulse-green':  { active: 'green',     housingClass: 'priority-working' },
+  'pulse-red':    { active: 'red',       housingClass: 'priority-waiting' },
+  'pulse-yellow': { active: 'yellow',    housingClass: 'priority-completed' },
+  'flash-red':    { active: 'red',       housingClass: 'priority-waiting' },
+};
+
+let currentSignal = null;
+let taskStart = null;
+
+function update(data) {
+  // Clear all
+  Object.values(lights).forEach(el => el.classList.remove('active', 'animate-pulse-green', 'animate-pulse-red', 'animate-pulse-yellow', 'animate-flash-red'));
+  Object.values(labels).forEach(el => el.classList.remove('on'));
+  housing.className = 'housing';
+  idleBreathe.classList.remove('on');
+
+  const sig = data.signal || 'idle';
+  const pattern = data.pattern || 'off';
+  const cfg = PATTERN_MAP[pattern] || PATTERN_MAP['off'];
+
+  if (cfg.active) {
+    const light = lights[cfg.active];
+    light.classList.add('active', `animate-${pattern}`);
+    labels[cfg.active].classList.add('on');
+    if (cfg.housingClass) housing.classList.add(cfg.housingClass);
+    elapsedEl.textContent = '';
+    idleBreathe.classList.remove('on');
+  } else {
+    // idle – all off, breather
+    idleBreathe.classList.add('on');
+    elapsedEl.textContent = '';
+  }
+
+  sigName.textContent = data.emoji ? `${data.emoji} ${data.tool || 'AI Tool'}` : (data.tool || 'AI Tool');
+  msgEl.textContent = data.message || '';
+  currentSignal = sig;
+}
+
+// ─── SSE Connection ────────────────────────────
+function connect() {
+  const src = new EventSource(`http://${HOST}/events`);
+  src.onmessage = e => { try { update(JSON.parse(e.data)); } catch(ex) {} };
+  src.onerror = () => { src.close(); setTimeout(poll, 2000); };
+}
+
+function poll() {
+  fetch(`http://${HOST}/state`).then(r => r.json()).then(update).catch(() => setTimeout(poll, 2000));
+}
+
+// PWA install
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js').catch(() => {}); }
+let deferredPrompt = null;
+const installBtn = document.getElementById('install-btn');
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'block';
+  installBtn.onclick = async () => { installBtn.style.display = 'none'; deferredPrompt.prompt(); };
+});
+
+connect();
+</script>
+</body>
+</html>

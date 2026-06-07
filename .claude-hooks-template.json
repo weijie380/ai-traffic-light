@@ -1,0 +1,8 @@
+{
+  "hooks": {
+    "onTaskStart": "python3 /Library/code/pycharmcode/ai-traffic-light/scripts/claude-hook onTaskStart --tool \"Claude Code\"",
+    "onTaskEnd": "python3 /Library/code/pycharmcode/ai-traffic-light/scripts/claude-hook onTaskEnd --tool \"Claude Code\"",  
+    "onError": "python3 /Library/code/pycharmcode/ai-traffic-light/scripts/claude-hook onError --tool \"Claude Code\"",
+    "onPermissionRequest": "python3 /Library/code/pycharmcode/ai-traffic-light/scripts/claude-hook onPermissionRequest --tool \"Claude Code\""
+  }
+}
