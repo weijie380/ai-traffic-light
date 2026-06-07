@@ -34,8 +34,17 @@
 
 从 [GitHub Releases](https://github.com/weijie380/ai-traffic-light/releases) 下载最新版：
 1. 下载 `AI Traffic Light.app.zip` → 解压 → 拖入 Applications
-2. 首次运行：右键 → 打开（或从 Launchpad 打开）
+2. 首次运行：**右键 → 打开**（或从 Launchpad 打开）
 3. 菜单栏出现红绿灯 🚦
+
+**⚠️ macOS 安全提示：** 如果看到"已损坏，无法打开"，这是因为 macOS 的 Gatekeeper 安全机制。解决方法：
+```bash
+# 方法1：在终端运行（推荐）
+xattr -cr /Applications/AI\ Traffic\ Light.app
+
+# 方法2：系统偏好设置 → 安全性与隐私 → 通用 → 点击"仍要打开"
+```
+然后重新从 Applications 启动 App。
 
 ### 方式二：从源码构建
 

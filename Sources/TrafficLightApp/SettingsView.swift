@@ -170,8 +170,8 @@ class TrafficLightStaticPreviewView: NSView {
         let y = bounds.height / 2
         let lights: [(NSColor, TrafficLightState)] = [
             (NSColor(red: 1.0, green: 0.23, blue: 0.19, alpha: 1.0), .waiting),
-            (NSColor(red: 0.9, green: 0.63, blue: 0.0, alpha: 1.0), .done),
-            (NSColor(red: 0.2, green: 0.78, blue: 0.35, alpha: 1.0), .working),
+            (NSColor(red: 1.0, green: 0.8, blue: 0.0, alpha: 1.0), .done),
+            (NSColor(red: 0.3, green: 0.9, blue: 0.4, alpha: 1.0), .working),
         ]
         for (i, (color, state)) in lights.enumerated() {
             let cx = 8 + radius + CGFloat(i) * step

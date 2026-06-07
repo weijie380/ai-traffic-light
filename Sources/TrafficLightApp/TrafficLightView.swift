@@ -133,8 +133,8 @@ class TrafficLightView: NSView {
     private func colorForLight(_ state: TrafficLightState) -> NSColor {
         switch state {
         case .waiting: return NSColor(red: 1.0, green: 0.23, blue: 0.19, alpha: 1.0) // 红
-        case .done:    return NSColor(red: 0.9, green: 0.63, blue: 0.0, alpha: 1.0)  // 黄
-        case .working: return NSColor(red: 0.2, green: 0.78, blue: 0.35, alpha: 1.0) // 绿
+        case .done:    return NSColor(red: 1.0, green: 0.8, blue: 0.0, alpha: 1.0)   // 亮黄
+        case .working: return NSColor(red: 0.3, green: 0.9, blue: 0.4, alpha: 1.0)   // 亮绿
         default:       return .gray
         }
     }

@@ -72,12 +72,12 @@ class MenuHeaderView: NSView {
             } else if active {
                 switch ls {
                 case .waiting: color = NSColor(red: 1.0, green: 0.23, blue: 0.19, alpha: 1.0)
-                case .done:    color = NSColor(red: 0.9, green: 0.63, blue: 0.0, alpha: 1.0)
-                case .working: color = NSColor(red: 0.2, green: 0.78, blue: 0.35, alpha: 1.0)
+                case .done:    color = NSColor(red: 1.0, green: 0.8, blue: 0.0, alpha: 1.0)
+                case .working: color = NSColor(red: 0.3, green: 0.9, blue: 0.4, alpha: 1.0)
                 default:       color = .gray
                 }
             } else {
-                color = NSColor(white: 0.75, alpha: 1.0)
+                color = NSColor(white: 0.85, alpha: 1.0)
             }
 
             let rect = NSRect(x: cx - radius, y: y, width: radius * 2, height: radius * 2)
