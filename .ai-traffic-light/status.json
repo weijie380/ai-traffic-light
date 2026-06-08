@@ -1,11 +1,11 @@
 {
-  "status": "working",
-  "signal": "working",
+  "status": "completed",
+  "signal": "completed",
   "tool": "Reasonix",
-  "message": "分析代码",
-  "emoji": "🟢",
-  "pattern": "pulse-green",
-  "timestamp": "2026-06-08T05:43:52Z",
-  "heartbeat": 1780897432,
-  "transition_count": 13
+  "message": "已完成",
+  "emoji": "🟡",
+  "pattern": "pulse-yellow",
+  "timestamp": "2026-06-08T06:04:17Z",
+  "heartbeat": 1780898657,
+  "transition_count": 4
 }
